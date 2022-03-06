@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
 <head th:replace="fragments :: head"></head>
 
-<body>
+<body class="container">
 
 <header th:replace="fragments :: header"></header>
 
@@ -11,7 +11,7 @@
         <label>Category name
             <input th:field="${eventCategory.name}" class="form-control">
         </label>
-        <p class="error" th:errors="${event.name}"></p>
+        <p class="error" th:errors="${eventCategory.name}"></p>
     </div>
 
     <div class="form-group">
