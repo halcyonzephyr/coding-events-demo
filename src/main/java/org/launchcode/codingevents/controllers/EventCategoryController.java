@@ -1,16 +1,15 @@
 package org.launchcode.codingevents.controllers;
 
-import org.launchcode.codingevents.data.EventRepository;
-import org.launchcode.codingevents.models.Event;
+import org.launchcode.codingevents.data.EventCategoryRepository;
 import org.launchcode.codingevents.models.EventCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.ui.Model;
 import javax.validation.Valid;
 
 
@@ -19,7 +18,7 @@ import javax.validation.Valid;
 public class EventCategoryController {
 
     @Autowired
-    private EventRepository eventCategoryRepository;
+    private EventCategoryRepository eventCategoryRepository;
 
     @GetMapping
     public String displayAllEvents(Model model) {
@@ -29,7 +28,7 @@ public class EventCategoryController {
         return "eventCategories/index";
     }
 
-    @GetMapping
+    @GetMapping("create")
     public String renderCreateEventCategoryForm(Model model) {
         model.addAttribute("title", "Create Category");
         model.addAttribute(new EventCategory());
@@ -37,17 +36,18 @@ public class EventCategoryController {
         return "eventCategories/create";
     }
 
-    @PostMapping
-    public String processCreateEventCategoryForm(@ModelAttribute @Valid Event newEvent,
+    @PostMapping("create")
+    public String processCreateEventCategoryForm(@Valid @ModelAttribute EventCategory eventCategory,
                                                  Errors errors, Model model) {
-        if(errors.hasErrors()) {
+        if (errors.hasErrors()) {
+            model.addAttribute("title", "Create Category");
+            model.addAttribute(new EventCategory());
             return "eventCategories/create";
         }
 
-        model.addAttribute("title", "Create Category");
-        model.addAttribute(new EventCategory());
 
-        eventCategoryRepository.save(newEvent);
+
+        eventCategoryRepository.save(eventCategory);
         return "redirect:";
     }
 }
